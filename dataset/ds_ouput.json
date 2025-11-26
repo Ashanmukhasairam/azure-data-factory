@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "*",
-				"folderPath": "output/*/",
+				"folderPath": "output/*",
 				"container": "fs-demo"
 			},
 			"columnDelimiter": ",",
