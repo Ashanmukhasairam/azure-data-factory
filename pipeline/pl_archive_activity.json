@@ -20,7 +20,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "output/",
+							"wildcardFolderPath": "output",
 							"wildcardFileName": "*",
 							"enablePartitionDiscovery": false
 						},
@@ -51,7 +51,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_ouput_archive",
+						"referenceName": "ds_ouput",
 						"type": "DatasetReference"
 					}
 				],

@@ -1,5 +1,5 @@
 {
-	"name": "ds_ouput_archive",
+	"name": "ds_ouput",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
