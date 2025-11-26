@@ -96,7 +96,6 @@
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"recursive": true,
-						"wildcardFileName": "ouput/*",
 						"enablePartitionDiscovery": false
 					}
 				}
