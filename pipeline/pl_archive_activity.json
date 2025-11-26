@@ -20,7 +20,6 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "output",
 							"wildcardFileName": "*",
 							"enablePartitionDiscovery": false
 						},
