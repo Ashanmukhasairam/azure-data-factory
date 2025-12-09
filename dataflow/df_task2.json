@@ -1,0 +1,143 @@
+{
+	"name": "df_task2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_input_employees",
+						"type": "DatasetReference"
+					},
+					"name": "EmployeesSrc"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "alterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          EMPLOYEE_ID as short,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          SALARY as short,",
+				"          DEPARTMENT_ID as short",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EmployeesSrc",
+				"source(output(",
+				"          EMPLOYEE_ID as integer,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          SALARY as integer,",
+				"          DEPARTMENT_ID as integer,",
+				"          oldHashID as binary,",
+				"          createDate as date,",
+				"          updateDate as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"EmployeesSrc derive(created_date = currentDate(),",
+				"          updated_date = currentDate(),",
+				"          newHashId = toBinary(sha2(512, columns()))) ~> derivedColumn1",
+				"derivedColumn1, source1 lookup(EmployeesSrc@EMPLOYEE_ID == source1@EMPLOYEE_ID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 derive(isNew = isNull(oldHashID),",
+				"          isChanged = not(isNull(oldHashID)) && (newHashId != oldHashID)) ~> derivedColumn2",
+				"derivedColumn2 select(mapColumn(",
+				"          EMPLOYEE_ID = EmployeesSrc@EMPLOYEE_ID,",
+				"          FIRST_NAME = EmployeesSrc@FIRST_NAME,",
+				"          LAST_NAME = EmployeesSrc@LAST_NAME,",
+				"          EMAIL = EmployeesSrc@EMAIL,",
+				"          SALARY = EmployeesSrc@SALARY,",
+				"          DEPARTMENT_ID = EmployeesSrc@DEPARTMENT_ID,",
+				"          newHashId,",
+				"          EMPLOYEE_ID = source1@EMPLOYEE_ID,",
+				"          FIRST_NAME = source1@FIRST_NAME,",
+				"          LAST_NAME = source1@LAST_NAME,",
+				"          EMAIL = source1@EMAIL,",
+				"          SALARY = source1@SALARY,",
+				"          DEPARTMENT_ID = source1@DEPARTMENT_ID,",
+				"          oldHashID,",
+				"          createDate,",
+				"          updateDate,",
+				"          isNew,",
+				"          isChanged",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 alterRow(insertIf(isNew&&!isChanged),",
+				"     updateIf(!isNew&&isChanged)) ~> alterRow1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EMPLOYEE_ID as integer,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          SALARY as integer,",
+				"          DEPARTMENT_ID as integer,",
+				"          updateDate as timestamp,",
+				"          createDate as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['EMPLOYEE_ID'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          EMPLOYEE_ID,",
+				"          FIRST_NAME,",
+				"          LAST_NAME,",
+				"          EMAIL,",
+				"          SALARY,",
+				"          DEPARTMENT_ID,",
+				"          oldHashID = newHashId,",
+				"          createDate,",
+				"          updateDate",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

@@ -1,29 +1,33 @@
 {
-	"name": "ds_archive",
+	"name": "ds_src_rs",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage1",
+			"referenceName": "AzureBlobStorage_img",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"FolderName": {
+			"Filename": {
 				"type": "string"
 			}
+		},
+		"folder": {
+			"name": "pl_datasets"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": {
-					"value": "@dataset().FolderName",
+				"fileName": {
+					"value": "@dataset().Filename",
 					"type": "Expression"
 				},
+				"folderPath": "input",
 				"container": "fs-demo"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
-			"firstRowAsHeader": true,
+			"firstRowAsHeader": false,
 			"quoteChar": "\""
 		},
 		"schema": []

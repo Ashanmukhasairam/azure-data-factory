@@ -1,24 +1,16 @@
 {
-	"name": "ds_archive",
+	"name": "ds_triggerMail_output",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
-		},
-		"parameters": {
-			"FolderName": {
-				"type": "string"
-			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": {
-					"value": "@dataset().FolderName",
-					"type": "Expression"
-				},
+				"folderPath": "ouput",
 				"container": "fs-demo"
 			},
 			"columnDelimiter": ",",

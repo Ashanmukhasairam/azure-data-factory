@@ -1,0 +1,187 @@
+{
+	"name": "dataflow_increment_data",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText3",
+						"type": "DatasetReference"
+					},
+					"name": "InputSrc"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "Azuredatabasetable"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "selectDatabaseTable"
+				},
+				{
+					"name": "selectinputSrc"
+				},
+				{
+					"name": "alterRow1"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "select3"
+				},
+				{
+					"name": "derivedColumn3"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          EMPLOYEE_ID as integer,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          SALARY as integer,",
+				"          DEPARTMENT_ID as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> InputSrc",
+				"source(output(",
+				"          EMPLOYEE_ID as integer,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          SALARY as integer,",
+				"          DEPARTMENT_ID as integer,",
+				"          updateDate as timestamp,",
+				"          createDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Azuredatabasetable",
+				"InputSrc derive(Hash = toBinary(sha2(512,\r",
+				"    EMPLOYEE_ID,\r",
+				"    FIRST_NAME,\r",
+				"    LAST_NAME,\r",
+				"    EMAIL,SALARY\r",
+				")),",
+				"          createDate = currentUTC()) ~> derivedColumn1",
+				"Azuredatabasetable derive(oldHashID1 = toBinary(sha2(512,\r",
+				"    EMPLOYEE_ID,\r",
+				"    FIRST_NAME,\r",
+				"    LAST_NAME,\r",
+				"    EMAIL,SALARY\r",
+				"))) ~> derivedColumn2",
+				"derivedColumn2 select(mapColumn(",
+				"          EMPLOYEE_ID,",
+				"          FIRST_NAME,",
+				"          LAST_NAME,",
+				"          EMAIL,",
+				"          SALARY,",
+				"          DEPARTMENT_ID,",
+				"          oldHashID = oldHashID1,",
+				"          updateDate,",
+				"          createDate1 = createDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectDatabaseTable",
+				"derivedColumn1 select(mapColumn(",
+				"          EMPLOYEE_ID,",
+				"          FIRST_NAME,",
+				"          LAST_NAME,",
+				"          EMAIL,",
+				"          SALARY,",
+				"          DEPARTMENT_ID,",
+				"          Hash,",
+				"          createDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectinputSrc",
+				"select3 alterRow(insertIf(isNull(oldHashID)),",
+				"     updateIf(Hash!=oldHashID),",
+				"     upsertIf(true())) ~> alterRow1",
+				"selectinputSrc, selectDatabaseTable join(selectinputSrc@EMPLOYEE_ID == selectDatabaseTable@EMPLOYEE_ID,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"derivedColumn3 select(mapColumn(",
+				"          EMPLOYEE_ID = selectinputSrc@EMPLOYEE_ID,",
+				"          FIRST_NAME = selectinputSrc@FIRST_NAME,",
+				"          LAST_NAME = selectinputSrc@LAST_NAME,",
+				"          EMAIL = selectinputSrc@EMAIL,",
+				"          SALARY = selectinputSrc@SALARY,",
+				"          DEPARTMENT_ID = selectinputSrc@DEPARTMENT_ID,",
+				"          Hash,",
+				"          createDate,",
+				"          oldHashID,",
+				"          updateDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"join1 derive(updateDate = iif(\r",
+				"   Hash != oldHashID || isNull(selectDatabaseTable@EMPLOYEE_ID),\r",
+				"   currentUTC(),\r",
+				"   updateDate\r",
+				"),",
+				"          createDate = iif(\r",
+				"   isNull(oldHashID),\r",
+				"   createDate,\r",
+				"   createDate1\r",
+				")) ~> derivedColumn3",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EMPLOYEE_ID as integer,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          SALARY as integer,",
+				"          DEPARTMENT_ID as integer,",
+				"          updateDate as timestamp,",
+				"          createDate as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:true,",
+				"     upsertable:true,",
+				"     keys:['EMPLOYEE_ID'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          EMPLOYEE_ID,",
+				"          FIRST_NAME,",
+				"          LAST_NAME,",
+				"          EMAIL,",
+				"          SALARY,",
+				"          DEPARTMENT_ID,",
+				"          updateDate,",
+				"          createDate",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

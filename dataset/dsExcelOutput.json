@@ -1,0 +1,20 @@
+{
+	"name": "dsExcelOutput",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "pl_datasets"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "test",
+			"table": "t_loadfromExcel"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

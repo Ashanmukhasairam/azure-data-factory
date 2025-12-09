@@ -1,0 +1,60 @@
+{
+	"name": "dsOnPremiseSQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SQLServerOnpremise",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "pl_datasets"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "ManagedBackupVersion",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IsAlwaysOn",
+				"type": "bit"
+			},
+			{
+				"name": "IsDropped",
+				"type": "bit"
+			},
+			{
+				"name": "IsEnabled",
+				"type": "bit"
+			},
+			{
+				"name": "RetentionPeriod",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "EncryptionAlgorithm",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SchedulingOption",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DayOfWeek",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DatabaseCount",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "backupfile"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

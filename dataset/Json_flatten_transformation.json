@@ -1,0 +1,45 @@
+{
+	"name": "Json_flatten_transformation",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_img",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Satellitedetails.json",
+				"folderPath": "input",
+				"container": "fs-demo"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer"
+				},
+				"price": {
+					"type": "integer"
+				},
+				"product": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"model": {
+							"type": "string"
+						},
+						"manufacturer": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

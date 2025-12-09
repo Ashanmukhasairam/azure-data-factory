@@ -1,0 +1,132 @@
+{
+	"name": "ds_copy_onPremise_cloud",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_img",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "pl_datasets"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output",
+				"container": "fs-demo"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "backup_set_id",
+				"type": "String"
+			},
+			{
+				"name": "first_family_number",
+				"type": "String"
+			},
+			{
+				"name": "first_media_number",
+				"type": "String"
+			},
+			{
+				"name": "filegroup_name",
+				"type": "String"
+			},
+			{
+				"name": "page_size",
+				"type": "String"
+			},
+			{
+				"name": "file_number",
+				"type": "String"
+			},
+			{
+				"name": "backed_up_page_count",
+				"type": "String"
+			},
+			{
+				"name": "file_type",
+				"type": "String"
+			},
+			{
+				"name": "source_file_block_size",
+				"type": "String"
+			},
+			{
+				"name": "file_size",
+				"type": "String"
+			},
+			{
+				"name": "logical_name",
+				"type": "String"
+			},
+			{
+				"name": "physical_drive",
+				"type": "String"
+			},
+			{
+				"name": "physical_name",
+				"type": "String"
+			},
+			{
+				"name": "state",
+				"type": "String"
+			},
+			{
+				"name": "state_desc",
+				"type": "String"
+			},
+			{
+				"name": "create_lsn",
+				"type": "String"
+			},
+			{
+				"name": "drop_lsn",
+				"type": "String"
+			},
+			{
+				"name": "file_guid",
+				"type": "String"
+			},
+			{
+				"name": "read_only_lsn",
+				"type": "String"
+			},
+			{
+				"name": "read_write_lsn",
+				"type": "String"
+			},
+			{
+				"name": "differential_base_lsn",
+				"type": "String"
+			},
+			{
+				"name": "differential_base_guid",
+				"type": "String"
+			},
+			{
+				"name": "backup_size",
+				"type": "String"
+			},
+			{
+				"name": "filegroup_guid",
+				"type": "String"
+			},
+			{
+				"name": "is_readonly",
+				"type": "String"
+			},
+			{
+				"name": "is_present",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

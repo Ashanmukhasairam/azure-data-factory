@@ -1,0 +1,9 @@
+{
+	"name": "amnet-demo",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "35d9c2da-6e20-47a8-8105-47d59558c3ed",
+		"tenantId": "a0d55139-70f6-49e4-b912-4d13d30fc66b"
+	}
+}

@@ -1,0 +1,46 @@
+{
+	"name": "AzureSqlTable5",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Orderid",
+				"type": "nvarchar"
+			},
+			{
+				"name": "customername",
+				"type": "nvarchar"
+			},
+			{
+				"name": "productname",
+				"type": "nvarchar"
+			},
+			{
+				"name": "category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Quantity",
+				"type": "nvarchar"
+			},
+			{
+				"name": "price ",
+				"type": "nvarchar"
+			},
+			{
+				"name": "orderdate",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "test",
+			"table": "t_Orders_excel"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

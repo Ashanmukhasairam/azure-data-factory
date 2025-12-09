@@ -1,8 +1,8 @@
 {
-	"name": "ds_ouput",
+	"name": "ds_input_employees",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage1",
+			"referenceName": "AzureBlobStorage_img",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "*",
-				"folderPath": "output",
+				"fileName": "employees.csv",
+				"folderPath": "input",
 				"container": "fs-demo"
 			},
 			"columnDelimiter": ",",
@@ -37,27 +37,7 @@
 				"type": "String"
 			},
 			{
-				"name": "PHONE_NUMBER",
-				"type": "String"
-			},
-			{
-				"name": "HIRE_DATE",
-				"type": "String"
-			},
-			{
-				"name": "JOB_ID",
-				"type": "String"
-			},
-			{
 				"name": "SALARY",
-				"type": "String"
-			},
-			{
-				"name": "COMMISSION_PCT",
-				"type": "String"
-			},
-			{
-				"name": "MANAGER_ID",
 				"type": "String"
 			},
 			{

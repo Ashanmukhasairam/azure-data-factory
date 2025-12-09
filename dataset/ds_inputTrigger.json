@@ -1,17 +1,25 @@
 {
-	"name": "ds_ouput",
+	"name": "ds_inputTrigger",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileName": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "*",
-				"folderPath": "output",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
+				"folderPath": "input",
 				"container": "fs-demo"
 			},
 			"columnDelimiter": ",",
@@ -37,27 +45,7 @@
 				"type": "String"
 			},
 			{
-				"name": "PHONE_NUMBER",
-				"type": "String"
-			},
-			{
-				"name": "HIRE_DATE",
-				"type": "String"
-			},
-			{
-				"name": "JOB_ID",
-				"type": "String"
-			},
-			{
 				"name": "SALARY",
-				"type": "String"
-			},
-			{
-				"name": "COMMISSION_PCT",
-				"type": "String"
-			},
-			{
-				"name": "MANAGER_ID",
 				"type": "String"
 			},
 			{

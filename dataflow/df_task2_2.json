@@ -1,0 +1,158 @@
+{
+	"name": "df_task2_2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText3",
+						"type": "DatasetReference"
+					},
+					"name": "InputSrc"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference"
+					},
+					"name": "Azuredatabasetable"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "alterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          EMPLOYEE_ID as integer,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          SALARY as short,",
+				"          DEPARTMENT_ID as short",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> InputSrc",
+				"source(output(",
+				"          EMPLOYEE_ID as integer,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          SALARY as integer,",
+				"          DEPARTMENT_ID as integer,",
+				"          oldHashID as binary,",
+				"          updateDate as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Azuredatabasetable",
+				"InputSrc derive(Hash = toBinary(md5(\r",
+				"    EMPLOYEE_ID,\r",
+				"    FIRST_NAME,\r",
+				"    LAST_NAME,\r",
+				"    EMAIL,\r",
+				"    SALARY\r",
+				")),",
+				"          updateDate = currentDate()) ~> derivedColumn1",
+				"derivedColumn1, Azuredatabasetable lookup(InputSrc@EMPLOYEE_ID == Azuredatabasetable@EMPLOYEE_ID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 split(isNull(Azuredatabasetable@EMPLOYEE_ID),",
+				"     !isNull(Azuredatabasetable@EMPLOYEE_ID) && notEquals(oldHashID, Hash),",
+				"     disjoint: false) ~> split1@(NewRecords, Update)",
+				"split1@Update alterRow(updateIf(true())) ~> alterRow1",
+				"split1@NewRecords sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EMPLOYEE_ID as integer,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          SALARY as integer,",
+				"          DEPARTMENT_ID as integer,",
+				"          updateDate as timestamp,",
+				"          createDate as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          EMPLOYEE_ID = split1@NewRecords@EMPLOYEE_ID,",
+				"          FIRST_NAME = split1@NewRecords@FIRST_NAME,",
+				"          LAST_NAME = split1@NewRecords@LAST_NAME,",
+				"          EMAIL = split1@NewRecords@EMAIL,",
+				"          SALARY = split1@NewRecords@SALARY,",
+				"          DEPARTMENT_ID = split1@NewRecords@DEPARTMENT_ID,",
+				"          oldHashID = Hash,",
+				"          updateDate = split1@NewRecords@updateDate",
+				"     )) ~> sink1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EMPLOYEE_ID as integer,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          SALARY as integer,",
+				"          DEPARTMENT_ID as integer,",
+				"          updateDate as timestamp,",
+				"          createDate as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['EMPLOYEE_ID'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          EMPLOYEE_ID = split1@Update@EMPLOYEE_ID,",
+				"          FIRST_NAME = split1@Update@FIRST_NAME,",
+				"          LAST_NAME = split1@Update@LAST_NAME,",
+				"          EMAIL = split1@Update@EMAIL,",
+				"          SALARY = split1@Update@SALARY,",
+				"          DEPARTMENT_ID = split1@Update@DEPARTMENT_ID,",
+				"          oldHashID = Hash,",
+				"          updateDate = split1@Update@updateDate",
+				"     )) ~> sink2"
+			]
+		}
+	}
+}

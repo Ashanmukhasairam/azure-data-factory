@@ -1,0 +1,53 @@
+{
+	"name": "df_aggregations",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Excel_pl_df_aggregations",
+						"type": "DatasetReference"
+					},
+					"name": "salesxlsrc"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_output_append",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          SalesTaxRateID as short,",
+				"          { StateProvinceID} as short,",
+				"          { TaxType} as short,",
+				"          { TaxRate} as double,",
+				"          { Name} as string,",
+				"          { rowguid} as string,",
+				"          { ModifiedDate} as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> salesxlsrc",
+				"salesxlsrc aggregate(groupBy({ Name}),",
+				"     { TaxRate} = sum({ TaxRate})) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['df_aggregation_outpt.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

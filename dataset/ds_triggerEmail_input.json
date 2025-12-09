@@ -1,24 +1,17 @@
 {
-	"name": "ds_archive",
+	"name": "ds_triggerEmail_input",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
-		},
-		"parameters": {
-			"FolderName": {
-				"type": "string"
-			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": {
-					"value": "@dataset().FolderName",
-					"type": "Expression"
-				},
+				"fileName": "employees3.csv",
+				"folderPath": "input",
 				"container": "fs-demo"
 			},
 			"columnDelimiter": ",",

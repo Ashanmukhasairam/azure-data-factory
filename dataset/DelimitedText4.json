@@ -1,25 +1,18 @@
 {
-	"name": "ds_archive",
+	"name": "DelimitedText4",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage1",
+			"referenceName": "AzureDataLakeStorage1",
 			"type": "LinkedServiceReference"
-		},
-		"parameters": {
-			"FolderName": {
-				"type": "string"
-			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"folderPath": {
-					"value": "@dataset().FolderName",
-					"type": "Expression"
-				},
-				"container": "fs-demo"
+				"type": "AzureBlobFSLocation",
+				"fileName": "*",
+				"folderPath": "input",
+				"fileSystem": "fs-demo"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",

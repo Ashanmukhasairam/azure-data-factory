@@ -1,5 +1,5 @@
 {
-	"name": "ds_ouput",
+	"name": "dsoutput",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "*",
 				"folderPath": "output",
 				"container": "fs-demo"
 			},

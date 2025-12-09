@@ -1,24 +1,28 @@
 {
-	"name": "ds_archive",
+	"name": "ds_Sink_txt",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage1",
+			"referenceName": "AzureBlobStorage_img",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"FolderName": {
+			"FileName": {
 				"type": "string"
 			}
+		},
+		"folder": {
+			"name": "pl_datasets"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": {
-					"value": "@dataset().FolderName",
+				"fileName": {
+					"value": "@dataset().FileName",
 					"type": "Expression"
 				},
+				"folderPath": "output",
 				"container": "fs-demo"
 			},
 			"columnDelimiter": ",",

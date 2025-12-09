@@ -1,12 +1,12 @@
 {
-	"name": "ds_archive",
+	"name": "ds_archieve",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"FolderName": {
+			"fileName": {
 				"type": "string"
 			}
 		},
@@ -16,7 +16,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"folderPath": {
-					"value": "@dataset().FolderName",
+					"value": "@dataset().fileName",
 					"type": "Expression"
 				},
 				"container": "fs-demo"

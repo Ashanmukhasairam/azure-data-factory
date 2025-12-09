@@ -1,24 +1,19 @@
 {
-	"name": "ds_archive",
+	"name": "metadata_input",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage1",
+			"referenceName": "AzureBlobStorage_img",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"FolderName": {
-				"type": "string"
-			}
+		"folder": {
+			"name": "pl_datasets"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": {
-					"value": "@dataset().FolderName",
-					"type": "Expression"
-				},
+				"folderPath": "input",
 				"container": "fs-demo"
 			},
 			"columnDelimiter": ",",

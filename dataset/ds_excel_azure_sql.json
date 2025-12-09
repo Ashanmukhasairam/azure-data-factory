@@ -1,0 +1,55 @@
+{
+	"name": "ds_excel_azure_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_img",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "pl_datasets"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Book 1.xlsx",
+				"folderPath": "input",
+				"container": "fs-demo"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Orderid",
+				"type": "String"
+			},
+			{
+				"name": "customername",
+				"type": "String"
+			},
+			{
+				"name": "productname",
+				"type": "String"
+			},
+			{
+				"name": "category",
+				"type": "String"
+			},
+			{
+				"name": "Quantity",
+				"type": "String"
+			},
+			{
+				"name": "price ",
+				"type": "String"
+			},
+			{
+				"name": "orderdate",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

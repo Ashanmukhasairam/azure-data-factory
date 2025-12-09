@@ -1,0 +1,52 @@
+{
+	"name": "Excel_pl_df_aggregations",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_img",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Book 2.xlsx",
+				"folderPath": "input",
+				"container": "fs-demo"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "SalesTaxRateID",
+				"type": "String"
+			},
+			{
+				"name": " StateProvinceID",
+				"type": "String"
+			},
+			{
+				"name": " TaxType",
+				"type": "String"
+			},
+			{
+				"name": " TaxRate",
+				"type": "String"
+			},
+			{
+				"name": " Name",
+				"type": "String"
+			},
+			{
+				"name": " rowguid",
+				"type": "String"
+			},
+			{
+				"name": " ModifiedDate",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
