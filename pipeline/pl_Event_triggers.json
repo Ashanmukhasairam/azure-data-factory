@@ -73,6 +73,9 @@
 				"type": "string"
 			}
 		},
+		"folder": {
+			"name": "pipelines"
+		},
 		"annotations": [],
 		"lastPublishTime": "2025-12-04T12:17:37Z"
 	},
