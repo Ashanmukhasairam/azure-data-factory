@@ -27,6 +27,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "Tasks"
+		},
 		"annotations": [],
 		"lastPublishTime": "2025-11-28T06:57:22Z"
 	},
