@@ -1,0 +1,48 @@
+{
+	"name": "DelimitedText6",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output",
+				"container": "amnet-demo"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "EMPLOYEE_ID",
+				"type": "String"
+			},
+			{
+				"name": "FIRST_NAME",
+				"type": "String"
+			},
+			{
+				"name": "LAST_NAME",
+				"type": "String"
+			},
+			{
+				"name": "EMAIL",
+				"type": "String"
+			},
+			{
+				"name": "SALARY",
+				"type": "String"
+			},
+			{
+				"name": "DEPARTMENT_ID",
+				"type": "String"
+			}
+		]
+	}
+}
