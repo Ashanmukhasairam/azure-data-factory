@@ -1,10 +1,6 @@
 {
 	"name": "dsExcelOutput",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabase1",
-			"type": "LinkedServiceReference"
-		},
 		"folder": {
 			"name": "pl_datasets"
 		},
